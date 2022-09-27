@@ -26,6 +26,7 @@ async function run() {
     const database = client.db("healthcaredb");
     const usersCollection = database.collection("users");
     const servicesCollection = database.collection("services");
+    const doctorsCollection = database.collection("doctors");
 
     // getting all users
     app.get("/users", async (req, res) => {
@@ -39,6 +40,13 @@ async function run() {
       const cursor = servicesCollection.find({});
       const services = await cursor.toArray();
       res.send(services);
+    });
+
+    // getting all doctors
+    app.get("/doctors", async (req, res) => {
+      const cursor = doctorsCollection.find({});
+      const doctors = await cursor.toArray();
+      res.send(doctors);
     });
 
     // getting single user
