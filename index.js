@@ -244,73 +244,9 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", verifyJWT, (req, res) => {
-  res.send("Welcome to Woodpecker Database!");
+  res.send("Welcome to Digital Healthcare Database!");
 });
 
 app.listen(port, () => {
   console.log(`Listening at ${port}`);
-});
-
-const express = require("express");
-const cors = require("cors");
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-require("dotenv").config();
-const port = process.env.PORT || 5000;
-
-const app = express();
-
-//middleware
-app.use(cors());
-app.use(express.json());
-
-// connect database
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@digital-healthcare.2b0em69.mongodb.net/?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-});
-
-async function run() {
-  try {
-    await client.connect();
-    console.log("Healthcare db connected");
-    const servicesCollection = client.db("healthcaredb").collection("services");
-    const usersCollection = client.db("healthcaredb").collection("users");
-
-    // Getting all users
-    app.get("/users", async (req, res) => {
-      const query = {};
-      const cursor = usersCollection.find(query);
-      const users = await cursor.toArray();
-      res.send(users);
-    });
-
-    //creating new user
-    app.post("/users", async (req, res) => {
-      const newUsers = req.body;
-      const users = await usersCollection.insertOne(newUsers);
-      res.json(users);
-    });
-
-    // Getting all services
-    app.get("/services", async (req, res) => {
-      const query = {};
-      const cursor = servicesCollection.find(query);
-      const services = await cursor.toArray();
-      res.send(services);
-    });
-  } finally {
-    // await client.close();
-  }
-}
-
-run().catch(console.dir);
-
-app.get("/", (req, res) => {
-  res.send("Running Healthcare Server");
-});
-
-app.listen(port, () => {
-  console.log("Listening to port ", port);
 });
