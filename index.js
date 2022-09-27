@@ -22,6 +22,15 @@ async function run() {
   try {
     await client.connect();
     console.log("Healthcare db connected");
+    const servicesCollection = client.db("healthcaredb").collection("services");
+
+    // Getting all users
+    app.get("/services", async (req, res) => {
+      const query = {};
+      const cursor = servicesCollection.find(query);
+      const services = await cursor.toArray();
+      res.send(services);
+    });
   } finally {
     // await client.close();
   }
