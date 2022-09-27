@@ -27,6 +27,7 @@ async function run() {
     const usersCollection = database.collection("users");
     const servicesCollection = database.collection("services");
     const doctorsCollection = database.collection("doctors");
+    const reviewsCollection = database.collection("reviews");
 
     // getting all users
     app.get("/users", async (req, res) => {
@@ -47,6 +48,13 @@ async function run() {
       const cursor = doctorsCollection.find({});
       const doctors = await cursor.toArray();
       res.send(doctors);
+    });
+
+    // getting all reviews
+    app.get("/reviews", async (req, res) => {
+      const cursor = reviewsCollection.find({});
+      const reviews = await cursor.toArray();
+      res.send(reviews);
     });
 
     // getting single user
