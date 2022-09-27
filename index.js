@@ -43,6 +43,22 @@ async function run() {
       res.send(services);
     });
 
+    // getting single services by id
+    app.get("/services/:productId", async (req, res) => {
+      const id = req.params.productId;
+      const query = { _id: ObjectId(id) };
+      const singleService = await servicesCollection.findOne(query);
+      res.send(singleService);
+    });
+
+    // getting single doctor by id
+    app.get("/doctors/:doctorId", async (req, res) => {
+      const id = req.params.doctorId;
+      const query = { _id: ObjectId(id) };
+      const singleDoctor = await doctorsCollection.findOne(query);
+      res.send(singleDoctor);
+    });
+
     // getting all doctors
     app.get("/doctors", async (req, res) => {
       const cursor = doctorsCollection.find({});
@@ -79,13 +95,6 @@ async function run() {
         options
       );
       res.json(newUser);
-    });
-
-    app.get("/admin/:email", async (req, res) => {
-      const email = req.params.email;
-      const user = await usersCollection.findOne({ email: email });
-      const isAdmin = user.role === true;
-      res.send({ admin: isAdmin });
     });
   } finally {
     // await client.close();
