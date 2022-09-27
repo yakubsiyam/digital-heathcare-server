@@ -40,6 +40,37 @@ async function run() {
       const services = await cursor.toArray();
       res.send(services);
     });
+
+    // getting single user
+    app.get("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      //console.log(email, decodedEmail);
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      //const isAdmin = user?.role ? true : false;
+      res.json(user);
+    });
+
+    // creating new users
+    app.put("/users", async (req, res) => {
+      const user = req.body;
+      const filter = { email: user.email };
+      const options = { upsert: true };
+      const updateDoc = { $set: user };
+      const newUser = await usersCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.json(newUser);
+    });
+
+    app.get("/admin/:email", async (req, res) => {
+      const email = req.params.email;
+      const user = await usersCollection.findOne({ email: email });
+      const isAdmin = user.role === true;
+      res.send({ admin: isAdmin });
+    });
   } finally {
     // await client.close();
   }
