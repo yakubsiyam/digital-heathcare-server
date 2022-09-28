@@ -88,6 +88,13 @@ async function run() {
       res.json(reviews);
     });
 
+    app.delete("/orders/:orderId", async (req, res) => {
+      const id = req.params.orderId;
+      const query = { _id: ObjectId(id) };
+      const result = await appsCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // getting all reviews
     app.get("/reviews", async (req, res) => {
       const cursor = reviewsCollection.find({});
