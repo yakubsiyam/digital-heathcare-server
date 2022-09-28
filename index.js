@@ -66,6 +66,13 @@ async function run() {
       const doctors = await cursor.toArray();
       res.send(doctors);
     });
+    app.get("/doctos/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await doctorsCollection.findOne(query);
+      //const isAdmin = user?.role ? true : false;
+      res.json(user);
+    });
 
     // getting all reviews
     app.get("/apps", async (req, res) => {
