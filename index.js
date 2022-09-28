@@ -69,7 +69,7 @@ async function run() {
 
     // getting all reviews
     app.get("/apps", async (req, res) => {
-      const cursor = reviewsCollection.find({});
+      const cursor = appsCollection.find({});
       const reviews = await cursor.toArray();
       res.send(reviews);
     });
@@ -77,7 +77,7 @@ async function run() {
     app.post("/apps", async (req, res) => {
       const newReview = req.body;
       //console.log(email, decodedEmail);
-      const reviews = await reviewsCollection.insertOne(newReview);
+      const reviews = await appsCollection.insertOne(newReview);
       res.json(reviews);
     });
 
