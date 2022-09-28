@@ -96,6 +96,21 @@ async function run() {
       );
       res.json(newUser);
     });
+
+    // getting all reviews
+    app.get("/reviews", async (req, res) => {
+      const cursor = reviewsCollection.find({});
+      const reviews = await cursor.toArray();
+      res.send(reviews);
+    });
+    //adding new review
+    app.post("/reviews", async (req, res) => {
+      const newReview = req.body;
+      const email = newReview.email;
+      //console.log(email, decodedEmail);
+      const reviews = await reviewsCollection.insertOne(newReview);
+      res.json(reviews);
+    });
   } finally {
     // await client.close();
   }
